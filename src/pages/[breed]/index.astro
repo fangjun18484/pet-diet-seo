@@ -4,14 +4,14 @@ import fs from 'node:fs';
 
 export async function getStaticPaths() {
   const schema = JSON.parse(fs.readFileSync('./data/schema.json', 'utf-8'));
-  return schema.breeds.map(b => ({
+  return schema.breeds.map((b: any) => ({
     params: { breed: b.id },
-    props: { breedName: b.name, emoji: b.emoji }
+    props: { breedName: b.name, emoji: b.emoji, schema }
   }));
 }
 
 const { breed } = Astro.params;
-const { breedName, emoji } = Astro.props;
+const { breedName, emoji, schema } = Astro.props;
 
 // Fetch all markdown files that have been generated using Vite's glob import
 const allPosts = Object.values(import.meta.glob('../*/*.md', { eager: true })) as any[];
@@ -23,6 +23,12 @@ const breedPosts = allPosts.filter(post => post.file.includes(`/${breed}/`));
   <header class="hero">
     <h1>{breedName} Diet Guide {emoji}</h1>
     <p>Browse our complete database of what your {breedName} can and cannot eat.</p>
+    
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder={`e.g. Can my ${breedName} eat bananas?`} />
+      <button id="searchBtn">Search</button>
+    </div>
+
     <a href="/" class="back-link">← Back to all breeds</a>
   </header>
 
@@ -37,6 +43,36 @@ const breedPosts = allPosts.filter(post => post.file.includes(`/${breed}/`));
     </div>
   </section>
 </Layout>
+
+<script define:vars={{ breeds: schema.breeds, foods: schema.foods, currentBreedId: breed, currentBreedName: breedName }}>
+	const searchInput = document.getElementById('searchInput');
+	const searchBtn = document.getElementById('searchBtn');
+
+	function handleSearch() {
+		let query = searchInput.value.trim().toLowerCase();
+		if (!query) return;
+
+		let foundBreed = breeds.find(b => query.includes(b.name.toLowerCase()) || query.includes(b.id.replace(/-/g, ' ')));
+        // If the user didn't specify a breed, assume they mean the breed of the current page
+        if (!foundBreed) {
+            foundBreed = breeds.find(b => b.id === currentBreedId);
+            query = currentBreedName.toLowerCase() + " " + query; // enrich query for request logging
+        }
+
+		const foundFood = foods.find(f => query.includes(f.name.toLowerCase()) || query.includes(f.id.replace(/-/g, ' ')));
+
+		if (foundBreed && foundFood) {
+			window.location.href = `/${foundBreed.id}/can-eat-${foundFood.id}`;
+		} else {
+			window.location.href = `/request?q=${encodeURIComponent(query)}`;
+		}
+	}
+
+	searchBtn.addEventListener('click', handleSearch);
+	searchInput.addEventListener('keydown', (e) => {
+		if (e.key === 'Enter') handleSearch();
+	});
+</script>
 
 <style>
 	.hero {
@@ -55,6 +91,42 @@ const breedPosts = allPosts.filter(post => post.file.includes(`/${breed}/`));
 		font-size: 1.2rem;
 		color: var(--text-muted);
 		margin-bottom: 24px;
+	}
+	.search-box {
+		display: flex;
+		max-width: 600px;
+		margin: 0 auto 24px auto;
+		gap: 12px;
+	}
+	.search-box input {
+		flex: 1;
+		padding: 16px 24px;
+		font-size: 1.1rem;
+		border: 1px solid var(--border-color);
+		border-radius: 50px;
+		background: var(--card-bg);
+		color: var(--text-main);
+		outline: none;
+		transition: border-color 0.2s, box-shadow 0.2s;
+	}
+	.search-box input:focus {
+		border-color: var(--primary);
+		box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+	}
+	.search-box button {
+		padding: 0 32px;
+		font-size: 1.1rem;
+		font-weight: 600;
+		border: none;
+		border-radius: 50px;
+		background: var(--primary);
+		color: white;
+		cursor: pointer;
+		transition: background 0.2s, transform 0.1s;
+	}
+	.search-box button:hover {
+		background: var(--primary-hover);
+		transform: translateY(-2px);
 	}
 	.back-link {
 		display: inline-block;
