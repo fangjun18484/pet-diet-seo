@@ -1,10 +1,31 @@
 {
   "breeds": [
     { "id": "golden-retriever", "name": "Golden Retriever", "emoji": "🐕" },
-    { "id": "poodle", "name": "Poodle", "emoji": "🐩" }
+    { "id": "poodle", "name": "Poodle", "emoji": "🐩" },
+    { "id": "french-bulldog", "name": "French Bulldog", "emoji": "🐾" },
+    { "id": "german-shepherd", "name": "German Shepherd", "emoji": "🐺" },
+    { "id": "beagle", "name": "Beagle", "emoji": "🐶" },
+    { "id": "rottweiler", "name": "Rottweiler", "emoji": "🐕‍🦺" },
+    { "id": "dachshund", "name": "Dachshund", "emoji": "🌭" },
+    { "id": "yorkshire-terrier", "name": "Yorkshire Terrier", "emoji": "🎀" },
+    { "id": "boxer", "name": "Boxer", "emoji": "🥊" },
+    { "id": "siberian-husky", "name": "Siberian Husky", "emoji": "❄️" }
   ],
   "foods": [
     { "id": "apples", "name": "Apples", "category": "Fruit" },
-    { "id": "chocolate", "name": "Chocolate", "category": "Sweets" }
+    { "id": "chocolate", "name": "Chocolate", "category": "Sweets" },
+    { "id": "grapes", "name": "Grapes", "category": "Fruit" },
+    { "id": "bananas", "name": "Bananas", "category": "Fruit" },
+    { "id": "blueberries", "name": "Blueberries", "category": "Fruit" },
+    { "id": "onions", "name": "Onions", "category": "Vegetable" },
+    { "id": "garlic", "name": "Garlic", "category": "Vegetable" },
+    { "id": "watermelon", "name": "Watermelon", "category": "Fruit" },
+    { "id": "tomatoes", "name": "Tomatoes", "category": "Vegetable" },
+    { "id": "strawberries", "name": "Strawberries", "category": "Fruit" },
+    { "id": "avocado", "name": "Avocado", "category": "Fruit" },
+    { "id": "peanut-butter", "name": "Peanut Butter", "category": "Snacks" },
+    { "id": "bread", "name": "Bread", "category": "Carbs" },
+    { "id": "cheese", "name": "Cheese", "category": "Dairy" },
+    { "id": "macadamia-nuts", "name": "Macadamia Nuts", "category": "Nuts" }
   ]
 }

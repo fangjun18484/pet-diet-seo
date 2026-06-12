@@ -1,5 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import fs from 'node:fs';
+
+const schema = JSON.parse(fs.readFileSync('./data/schema.json', 'utf-8'));
 ---
 
 <Layout title="Safe Pet Diet | Can My Pet Eat This?" description="Discover safe and healthy food choices for your dogs and cats. Search our comprehensive database of pet-safe foods.">
@@ -8,25 +11,47 @@ import Layout from '../layouts/Layout.astro';
 		<p>Search thousands of foods to see if they are safe for your furry friend.</p>
 		
 		<div class="search-box">
-			<input type="text" placeholder="e.g. Can a Golden Retriever eat apples?" />
-			<button>Search</button>
+			<input type="text" id="searchInput" placeholder="e.g. Can a Husky eat Strawberries?" />
+			<button id="searchBtn">Search</button>
 		</div>
 	</header>
 
 	<section class="popular">
-		<h2>Popular Queries</h2>
+		<h2>Browse by Breed</h2>
 		<div class="grid">
-			<a href="/golden-retriever/can-eat-apples" class="card">
-				<h3>Golden Retriever 🐕</h3>
-				<p>Can they eat <strong>Apples</strong>?</p>
-			</a>
-			<a href="/poodle/can-eat-chocolate" class="card">
-				<h3>Poodle 🐩</h3>
-				<p>Can they eat <strong>Chocolate</strong>?</p>
-			</a>
+			{schema.breeds.map((breed: any) => (
+				<a href={`/${breed.id}`} class="card">
+					<h3>{breed.name} {breed.emoji}</h3>
+					<p>Explore safe and dangerous foods for <strong>{breed.name}s</strong>.</p>
+				</a>
+			))}
 		</div>
 	</section>
 </Layout>
+
+<script define:vars={{ breeds: schema.breeds, foods: schema.foods }}>
+	const searchInput = document.getElementById('searchInput');
+	const searchBtn = document.getElementById('searchBtn');
+
+	function handleSearch() {
+		const query = searchInput.value.trim().toLowerCase();
+		if (!query) return;
+
+		const foundBreed = breeds.find(b => query.includes(b.name.toLowerCase()) || query.includes(b.id.replace(/-/g, ' ')));
+		const foundFood = foods.find(f => query.includes(f.name.toLowerCase()) || query.includes(f.id.replace(/-/g, ' ')));
+
+		if (foundBreed && foundFood) {
+			window.location.href = `/${foundBreed.id}/can-eat-${foundFood.id}`;
+		} else {
+			window.location.href = `/request?q=${encodeURIComponent(query)}`;
+		}
+	}
+
+	searchBtn.addEventListener('click', handleSearch);
+	searchInput.addEventListener('keydown', (e) => {
+		if (e.key === 'Enter') handleSearch();
+	});
+</script>
 
 <style>
 	.hero {

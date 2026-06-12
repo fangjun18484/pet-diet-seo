@@ -1,0 +1,95 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+export const prerender = false;
+---
+<Layout title="Requesting AI Research..." description="We are researching this topic.">
+	<div class="request-container">
+		<h1>We don't have this yet! 🤖</h1>
+		<p>But don't worry, we've assigned our AI pet nutritionist to research your question.</p>
+		
+		<div class="status-box">
+			<div class="loader"></div>
+			<p id="status-text">Analyzing your query...</p>
+		</div>
+
+		<a href="/" class="btn-home">← Return Home</a>
+	</div>
+
+	<script>
+		async function captureRequest() {
+			const urlParams = new URLSearchParams(window.location.search);
+			const query = urlParams.get('q');
+			
+			if (!query) {
+				document.getElementById('status-text').innerText = "Please enter a valid search term.";
+				return;
+			}
+
+			// We pass the raw query as both breedId and foodId for the backend to log
+			// The Python script will extract the real entities later using LLM.
+			const fakeId = "query-" + Date.now();
+			
+			try {
+				const response = await fetch('/api/capture', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({
+						breedId: fakeId,
+						breedName: query,
+						foodId: "raw-query",
+						foodName: query
+					})
+				});
+
+				if (response.ok) {
+					document.getElementById('status-text').innerHTML = `<strong>"${query}"</strong> has been queued!<br/><br/>Our AI runs every night to generate missing articles. Check back tomorrow! 🌙`;
+					const loader = document.querySelector('.loader') as HTMLElement;
+					if(loader) loader.style.display = 'none';
+				}
+			} catch(e) {
+				document.getElementById('status-text').innerText = "Oops, something went wrong saving your request.";
+			}
+		}
+
+		captureRequest();
+	</script>
+</Layout>
+
+<style>
+	.request-container {
+		text-align: center;
+		padding: 80px 20px;
+		max-width: 600px;
+		margin: 0 auto;
+	}
+	h1 { font-size: 2.5rem; margin-bottom: 16px; color: var(--primary); }
+	p { font-size: 1.2rem; color: var(--text-muted); margin-bottom: 40px; }
+	.status-box {
+		background: var(--card-bg);
+		border: 1px solid var(--border-color);
+		border-radius: var(--radius);
+		padding: 40px;
+		margin-bottom: 40px;
+		box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+	}
+	.loader {
+		border: 4px solid var(--border-color);
+		border-top: 4px solid var(--primary);
+		border-radius: 50%;
+		width: 40px;
+		height: 40px;
+		animation: spin 1s linear infinite;
+		margin: 0 auto 20px auto;
+	}
+	@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+	.btn-home {
+		display: inline-block;
+		padding: 12px 24px;
+		background: var(--primary);
+		color: white;
+		border-radius: 50px;
+		font-weight: 600;
+	}
+	.btn-home:hover { background: var(--primary-hover); }
+</style>
