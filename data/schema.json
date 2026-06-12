@@ -1,0 +1,10 @@
+{
+  "breeds": [
+    { "id": "golden-retriever", "name": "Golden Retriever", "emoji": "🐕" },
+    { "id": "poodle", "name": "Poodle", "emoji": "🐩" }
+  ],
+  "foods": [
+    { "id": "apples", "name": "Apples", "category": "Fruit" },
+    { "id": "chocolate", "name": "Chocolate", "category": "Sweets" }
+  ]
+}

@@ -1,0 +1,115 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Safe Pet Diet | Can My Pet Eat This?" description="Discover safe and healthy food choices for your dogs and cats. Search our comprehensive database of pet-safe foods.">
+	<header class="hero">
+		<h1>Can My Pet Eat This? 🐶</h1>
+		<p>Search thousands of foods to see if they are safe for your furry friend.</p>
+		
+		<div class="search-box">
+			<input type="text" placeholder="e.g. Can a Golden Retriever eat apples?" />
+			<button>Search</button>
+		</div>
+	</header>
+
+	<section class="popular">
+		<h2>Popular Queries</h2>
+		<div class="grid">
+			<a href="/golden-retriever/can-eat-apples" class="card">
+				<h3>Golden Retriever 🐕</h3>
+				<p>Can they eat <strong>Apples</strong>?</p>
+			</a>
+			<a href="/poodle/can-eat-chocolate" class="card">
+				<h3>Poodle 🐩</h3>
+				<p>Can they eat <strong>Chocolate</strong>?</p>
+			</a>
+		</div>
+	</section>
+</Layout>
+
+<style>
+	.hero {
+		text-align: center;
+		padding: 80px 0 60px;
+	}
+	.hero h1 {
+		font-size: 3.5rem;
+		font-weight: 700;
+		margin-bottom: 16px;
+		background: linear-gradient(135deg, var(--primary), #8B5CF6);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+	.hero p {
+		font-size: 1.2rem;
+		color: var(--text-muted);
+		margin-bottom: 40px;
+	}
+	.search-box {
+		display: flex;
+		max-width: 600px;
+		margin: 0 auto;
+		gap: 12px;
+	}
+	.search-box input {
+		flex: 1;
+		padding: 16px 24px;
+		font-size: 1.1rem;
+		border: 1px solid var(--border-color);
+		border-radius: 50px;
+		background: var(--card-bg);
+		color: var(--text-main);
+		outline: none;
+		transition: border-color 0.2s, box-shadow 0.2s;
+	}
+	.search-box input:focus {
+		border-color: var(--primary);
+		box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+	}
+	.search-box button {
+		padding: 0 32px;
+		font-size: 1.1rem;
+		font-weight: 600;
+		border: none;
+		border-radius: 50px;
+		background: var(--primary);
+		color: white;
+		cursor: pointer;
+		transition: background 0.2s, transform 0.1s;
+	}
+	.search-box button:hover {
+		background: var(--primary-hover);
+		transform: translateY(-2px);
+	}
+	
+	.popular h2 {
+		font-size: 1.8rem;
+		margin-bottom: 24px;
+	}
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+		gap: 20px;
+	}
+	.card {
+		background: var(--card-bg);
+		border: 1px solid var(--border-color);
+		border-radius: var(--radius);
+		padding: 24px;
+		display: block;
+		transition: transform 0.2s ease, box-shadow 0.2s ease;
+	}
+	.card:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 12px 24px rgba(0,0,0,0.05);
+	}
+	.card h3 {
+		font-size: 1.2rem;
+		margin-bottom: 8px;
+		color: var(--text-main);
+	}
+	.card p {
+		color: var(--text-muted);
+	}
+</style>
