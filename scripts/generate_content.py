@@ -4,8 +4,8 @@ import urllib.request
 import urllib.error
 
 # Config for local Gemma API (OpenAI compatible)
-API_URL = "http://localhost:11434/v1/chat/completions" # Default Ollama port
-MODEL_NAME = "gemma" 
+API_URL = "http://192.168.0.115:11434/v1/chat/completions" # User's Ollama server
+MODEL_NAME = "gemma4:31b" 
 API_KEY = "sk-local"
 
 def load_schema():

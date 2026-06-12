@@ -1,0 +1,89 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import fs from 'node:fs';
+
+export async function getStaticPaths() {
+  const schema = JSON.parse(fs.readFileSync('./data/schema.json', 'utf-8'));
+  return schema.breeds.map(b => ({
+    params: { breed: b.id },
+    props: { breedName: b.name, emoji: b.emoji }
+  }));
+}
+
+const { breed } = Astro.params;
+const { breedName, emoji } = Astro.props;
+
+// Fetch all markdown files that have been generated using Vite's glob import
+const allPosts = Object.values(import.meta.glob('../*/*.md', { eager: true })) as any[];
+// Filter for the current breed
+const breedPosts = allPosts.filter(post => post.file.includes(`/${breed}/`));
+---
+
+<Layout title={`${breedName} Diet Guide ${emoji}`} description={`Find out what foods are safe and dangerous for your ${breedName}.`}>
+  <header class="hero">
+    <h1>{breedName} Diet Guide {emoji}</h1>
+    <p>Browse our complete database of what your {breedName} can and cannot eat.</p>
+    <a href="/" class="back-link">← Back to all breeds</a>
+  </header>
+
+  <section class="popular">
+    <div class="grid">
+      {breedPosts.map(post => (
+        <a href={post.url} class="card">
+          <h3>{post.frontmatter.title}</h3>
+          <p>{post.frontmatter.description}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>
+
+<style>
+	.hero {
+		text-align: center;
+		padding: 60px 0 40px;
+	}
+	.hero h1 {
+		font-size: 3rem;
+		font-weight: 700;
+		margin-bottom: 16px;
+		background: linear-gradient(135deg, var(--primary), #8B5CF6);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+	.hero p {
+		font-size: 1.2rem;
+		color: var(--text-muted);
+		margin-bottom: 24px;
+	}
+	.back-link {
+		display: inline-block;
+		font-weight: 600;
+		margin-bottom: 40px;
+	}
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+		gap: 20px;
+	}
+	.card {
+		background: var(--card-bg);
+		border: 1px solid var(--border-color);
+		border-radius: var(--radius);
+		padding: 24px;
+		display: block;
+		transition: transform 0.2s ease, box-shadow 0.2s ease;
+	}
+	.card:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 12px 24px rgba(0,0,0,0.05);
+	}
+	.card h3 {
+		font-size: 1.2rem;
+		margin-bottom: 8px;
+		color: var(--text-main);
+	}
+	.card p {
+		color: var(--text-muted);
+	}
+</style>
