@@ -1,31 +1,601 @@
 {
   "breeds": [
-    { "id": "golden-retriever", "name": "Golden Retriever", "emoji": "🐕" },
-    { "id": "poodle", "name": "Poodle", "emoji": "🐩" },
-    { "id": "french-bulldog", "name": "French Bulldog", "emoji": "🐾" },
-    { "id": "german-shepherd", "name": "German Shepherd", "emoji": "🐺" },
-    { "id": "beagle", "name": "Beagle", "emoji": "🐶" },
-    { "id": "rottweiler", "name": "Rottweiler", "emoji": "🐕‍🦺" },
-    { "id": "dachshund", "name": "Dachshund", "emoji": "🌭" },
-    { "id": "yorkshire-terrier", "name": "Yorkshire Terrier", "emoji": "🎀" },
-    { "id": "boxer", "name": "Boxer", "emoji": "🥊" },
-    { "id": "siberian-husky", "name": "Siberian Husky", "emoji": "❄️" }
+    {
+      "id": "labrador-retriever",
+      "name": "Labrador Retriever",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "german-shepherd",
+      "name": "German Shepherd",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "golden-retriever",
+      "name": "Golden Retriever",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "french-bulldog",
+      "name": "French Bulldog",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "bulldog",
+      "name": "Bulldog",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "poodle",
+      "name": "Poodle",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "beagle",
+      "name": "Beagle",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "rottweiler",
+      "name": "Rottweiler",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "german-shorthaired-pointer",
+      "name": "German Shorthaired Pointer",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "dachshund",
+      "name": "Dachshund",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "pembroke-welsh-corgi",
+      "name": "Pembroke Welsh Corgi",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "australian-shepherd",
+      "name": "Australian Shepherd",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "yorkshire-terrier",
+      "name": "Yorkshire Terrier",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "boxer",
+      "name": "Boxer",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "great-dane",
+      "name": "Great Dane",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "siberian-husky",
+      "name": "Siberian Husky",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "cavalier-king-charles-spaniel",
+      "name": "Cavalier King Charles Spaniel",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "doberman-pinscher",
+      "name": "Doberman Pinscher",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "miniature-schnauzer",
+      "name": "Miniature Schnauzer",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "shih-tzu",
+      "name": "Shih Tzu",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "boston-terrier",
+      "name": "Boston Terrier",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "bernese-mountain-dog",
+      "name": "Bernese Mountain Dog",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "pomeranian",
+      "name": "Pomeranian",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "havanese",
+      "name": "Havanese",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "cane-corso",
+      "name": "Cane Corso",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "english-springer-spaniel",
+      "name": "English Springer Spaniel",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "shetland-sheepdog",
+      "name": "Shetland Sheepdog",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "brittany",
+      "name": "Brittany",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "pug",
+      "name": "Pug",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "cocker-spaniel",
+      "name": "Cocker Spaniel",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "miniature-american-shepherd",
+      "name": "Miniature American Shepherd",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "border-collie",
+      "name": "Border Collie",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "mastiff",
+      "name": "Mastiff",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "chihuahua",
+      "name": "Chihuahua",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "vizsla",
+      "name": "Vizsla",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "basset-hound",
+      "name": "Basset Hound",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "belgian-malinois",
+      "name": "Belgian Malinois",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "maltese",
+      "name": "Maltese",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "weimaraner",
+      "name": "Weimaraner",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "collie",
+      "name": "Collie",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "newfoundland",
+      "name": "Newfoundland",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "rhodesian-ridgeback",
+      "name": "Rhodesian Ridgeback",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "shiba-inu",
+      "name": "Shiba Inu",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "west-highland-white-terrier",
+      "name": "West Highland White Terrier",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "bichon-frise",
+      "name": "Bichon Frise",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "bloodhound",
+      "name": "Bloodhound",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "english-cocker-spaniel",
+      "name": "English Cocker Spaniel",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "akita",
+      "name": "Akita",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "portuguese-water-dog",
+      "name": "Portuguese Water Dog",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "chesapeake-bay-retriever",
+      "name": "Chesapeake Bay Retriever",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "dalmatian",
+      "name": "Dalmatian",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "st.-bernard",
+      "name": "St. Bernard",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "papillon",
+      "name": "Papillon",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "australian-cattle-dog",
+      "name": "Australian Cattle Dog",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "bullmastiff",
+      "name": "Bullmastiff",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "samoyed",
+      "name": "Samoyed",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "scottish-terrier",
+      "name": "Scottish Terrier",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "soft-coated-wheaten-terrier",
+      "name": "Soft Coated Wheaten Terrier",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "whippet",
+      "name": "Whippet",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "german-wirehaired-pointer",
+      "name": "German Wirehaired Pointer",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "chinese-shar-pei",
+      "name": "Chinese Shar-Pei",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "wirehaired-pointing-griffon",
+      "name": "Wirehaired Pointing Griffon",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "great-pyrenees",
+      "name": "Great Pyrenees",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "alaskan-malamute",
+      "name": "Alaskan Malamute",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "cardigan-welsh-corgi",
+      "name": "Cardigan Welsh Corgi",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "cairn-terrier",
+      "name": "Cairn Terrier",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "irish-setter",
+      "name": "Irish Setter",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "giant-schnauzer",
+      "name": "Giant Schnauzer",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "old-english-sheepdog",
+      "name": "Old English Sheepdog",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "bull-terrier",
+      "name": "Bull Terrier",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "chow-chow",
+      "name": "Chow Chow",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "italian-greyhound",
+      "name": "Italian Greyhound",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "pekingese",
+      "name": "Pekingese",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "irish-wolfhound",
+      "name": "Irish Wolfhound",
+      "emoji": "\ud83d\udc36"
+    },
+    {
+      "id": "persian",
+      "name": "Persian",
+      "emoji": "\ud83d\udc31"
+    },
+    {
+      "id": "maine-coon",
+      "name": "Maine Coon",
+      "emoji": "\ud83d\udc31"
+    },
+    {
+      "id": "ragdoll",
+      "name": "Ragdoll",
+      "emoji": "\ud83d\udc31"
+    },
+    {
+      "id": "sphynx",
+      "name": "Sphynx",
+      "emoji": "\ud83d\udc31"
+    },
+    {
+      "id": "british-shorthair",
+      "name": "British Shorthair",
+      "emoji": "\ud83d\udc31"
+    },
+    {
+      "id": "abyssinian",
+      "name": "Abyssinian",
+      "emoji": "\ud83d\udc31"
+    },
+    {
+      "id": "exotic-shorthair",
+      "name": "Exotic Shorthair",
+      "emoji": "\ud83d\udc31"
+    },
+    {
+      "id": "siamese",
+      "name": "Siamese",
+      "emoji": "\ud83d\udc31"
+    },
+    {
+      "id": "scottish-fold",
+      "name": "Scottish Fold",
+      "emoji": "\ud83d\udc31"
+    },
+    {
+      "id": "burmese",
+      "name": "Burmese",
+      "emoji": "\ud83d\udc31"
+    },
+    {
+      "id": "birman",
+      "name": "Birman",
+      "emoji": "\ud83d\udc31"
+    },
+    {
+      "id": "american-shorthair",
+      "name": "American Shorthair",
+      "emoji": "\ud83d\udc31"
+    },
+    {
+      "id": "bengal",
+      "name": "Bengal",
+      "emoji": "\ud83d\udc31"
+    },
+    {
+      "id": "russian-blue",
+      "name": "Russian Blue",
+      "emoji": "\ud83d\udc31"
+    },
+    {
+      "id": "norwegian-forest-cat",
+      "name": "Norwegian Forest Cat",
+      "emoji": "\ud83d\udc31"
+    },
+    {
+      "id": "siberian",
+      "name": "Siberian",
+      "emoji": "\ud83d\udc31"
+    },
+    {
+      "id": "oriental-shorthair",
+      "name": "Oriental Shorthair",
+      "emoji": "\ud83d\udc31"
+    },
+    {
+      "id": "devon-rex",
+      "name": "Devon Rex",
+      "emoji": "\ud83d\udc31"
+    },
+    {
+      "id": "cornish-rex",
+      "name": "Cornish Rex",
+      "emoji": "\ud83d\udc31"
+    },
+    {
+      "id": "himalayan",
+      "name": "Himalayan",
+      "emoji": "\ud83d\udc31"
+    },
+    {
+      "id": "munchkin",
+      "name": "Munchkin",
+      "emoji": "\ud83d\udc31"
+    },
+    {
+      "id": "savannah",
+      "name": "Savannah",
+      "emoji": "\ud83d\udc31"
+    },
+    {
+      "id": "turkish-angora",
+      "name": "Turkish Angora",
+      "emoji": "\ud83d\udc31"
+    },
+    {
+      "id": "balinese",
+      "name": "Balinese",
+      "emoji": "\ud83d\udc31"
+    },
+    {
+      "id": "tonkinese",
+      "name": "Tonkinese",
+      "emoji": "\ud83d\udc31"
+    },
+    {
+      "id": "somali",
+      "name": "Somali",
+      "emoji": "\ud83d\udc31"
+    },
+    {
+      "id": "egyptian-mau",
+      "name": "Egyptian Mau",
+      "emoji": "\ud83d\udc31"
+    },
+    {
+      "id": "american-curl",
+      "name": "American Curl",
+      "emoji": "\ud83d\udc31"
+    },
+    {
+      "id": "colorpoint-shorthair",
+      "name": "Colorpoint Shorthair",
+      "emoji": "\ud83d\udc31"
+    },
+    {
+      "id": "singapura",
+      "name": "Singapura",
+      "emoji": "\ud83d\udc31"
+    }
   ],
   "foods": [
-    { "id": "apples", "name": "Apples", "category": "Fruit" },
-    { "id": "chocolate", "name": "Chocolate", "category": "Sweets" },
-    { "id": "grapes", "name": "Grapes", "category": "Fruit" },
-    { "id": "bananas", "name": "Bananas", "category": "Fruit" },
-    { "id": "blueberries", "name": "Blueberries", "category": "Fruit" },
-    { "id": "onions", "name": "Onions", "category": "Vegetable" },
-    { "id": "garlic", "name": "Garlic", "category": "Vegetable" },
-    { "id": "watermelon", "name": "Watermelon", "category": "Fruit" },
-    { "id": "tomatoes", "name": "Tomatoes", "category": "Vegetable" },
-    { "id": "strawberries", "name": "Strawberries", "category": "Fruit" },
-    { "id": "avocado", "name": "Avocado", "category": "Fruit" },
-    { "id": "peanut-butter", "name": "Peanut Butter", "category": "Snacks" },
-    { "id": "bread", "name": "Bread", "category": "Carbs" },
-    { "id": "cheese", "name": "Cheese", "category": "Dairy" },
-    { "id": "macadamia-nuts", "name": "Macadamia Nuts", "category": "Nuts" }
+    {
+      "id": "apples",
+      "name": "Apples",
+      "category": "Fruit"
+    },
+    {
+      "id": "chocolate",
+      "name": "Chocolate",
+      "category": "Sweets"
+    },
+    {
+      "id": "grapes",
+      "name": "Grapes",
+      "category": "Fruit"
+    },
+    {
+      "id": "bananas",
+      "name": "Bananas",
+      "category": "Fruit"
+    },
+    {
+      "id": "blueberries",
+      "name": "Blueberries",
+      "category": "Fruit"
+    },
+    {
+      "id": "onions",
+      "name": "Onions",
+      "category": "Vegetable"
+    },
+    {
+      "id": "garlic",
+      "name": "Garlic",
+      "category": "Vegetable"
+    },
+    {
+      "id": "watermelon",
+      "name": "Watermelon",
+      "category": "Fruit"
+    },
+    {
+      "id": "tomatoes",
+      "name": "Tomatoes",
+      "category": "Vegetable"
+    },
+    {
+      "id": "strawberries",
+      "name": "Strawberries",
+      "category": "Fruit"
+    },
+    {
+      "id": "avocado",
+      "name": "Avocado",
+      "category": "Fruit"
+    },
+    {
+      "id": "peanut-butter",
+      "name": "Peanut Butter",
+      "category": "Snacks"
+    },
+    {
+      "id": "bread",
+      "name": "Bread",
+      "category": "Carbs"
+    },
+    {
+      "id": "cheese",
+      "name": "Cheese",
+      "category": "Dairy"
+    },
+    {
+      "id": "macadamia-nuts",
+      "name": "Macadamia Nuts",
+      "category": "Nuts"
+    }
   ]
 }
