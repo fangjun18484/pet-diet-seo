@@ -13,41 +13,64 @@ export async function getStaticPaths() {
 const { breed } = Astro.params;
 const { breedName, emoji, schema } = Astro.props;
 
-// Fetch all markdown files that have been generated using Vite's glob import
 const allPosts = Object.values(import.meta.glob('../*/*.md', { eager: true })) as any[];
-// Filter for the current breed
 const breedPosts = allPosts.filter(post => post.file.includes(`/${breed}/`));
+
+// Group foods by category from schema
+const foodMap = new Map(schema.foods.map((f: any) => [f.id, f]));
+const grouped: Record<string, any[]> = {};
+breedPosts.forEach((post: any) => {
+  const match = post.file.match(/can-eat-(.+)\.md$/);
+  if (match) {
+    const foodInfo = foodMap.get(match[1]);
+    const cat = foodInfo?.category || 'Other';
+    if (!grouped[cat]) grouped[cat] = [];
+    grouped[cat].push(post);
+  }
+});
+
+const categoryEmojis: Record<string, string> = {
+  Fruit: '🍎', Vegetable: '🥦', Meat: '🥩', Seafood: '🦐', Protein: '🥚',
+  Dairy: '🥛', Grains: '🌾', Snacks: '🍿', Nuts: '🥜', Seeds: '🌻',
+  Sweets: '🍬', Drinks: '☕', Spices: '🌿', Condiments: '🧂', 'Junk Food': '🍟'
+};
 ---
 
-<Layout title={`${breedName} Diet Guide ${emoji} | Can My Pet Eat This?`} description={`Find out what foods are safe and dangerous for your ${breedName}. Complete diet safety guide.`}>
+<Layout title={`${breedName} Diet Guide ${emoji} | Can My Pet Eat This?`} description={`Complete food safety guide for your ${breedName}. Find out what foods are safe and dangerous.`}>
+  <nav class="navbar">
+    <a href="/" class="logo">🐾 <span>PetDiet</span></a>
+    <div class="breadcrumb">
+      <a href="/">Home</a> <span class="sep">/</span> <span class="current">{breedName}</span>
+    </div>
+  </nav>
+
   <header class="hero">
-    <a href="/" class="back-link">← Back to all breeds</a>
     <span class="hero-emoji">{emoji}</span>
     <h1>{breedName} Diet Guide</h1>
-    <p>Browse our complete database of what your {breedName} can and cannot eat.</p>
+    <p>Complete food safety database for your {breedName}. {breedPosts.length} foods researched.</p>
     
     <div class="search-box">
-      <input type="text" id="searchInput" placeholder={`e.g. Can my ${breedName} eat bananas?`} />
+      <input type="text" id="searchInput" placeholder={`Search foods for ${breedName}...`} />
       <button id="searchBtn">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         Search
       </button>
     </div>
-
-    <p class="result-count">{breedPosts.length} food guides available</p>
   </header>
 
-  <section class="articles">
-    <div class="grid">
-      {breedPosts.map(post => (
-        <a href={post.url} class="card">
-          <h3>{post.frontmatter.title}</h3>
-          <p>{post.frontmatter.description}</p>
-          <span class="card-arrow">→</span>
-        </a>
-      ))}
-    </div>
-  </section>
+  {Object.entries(grouped).map(([category, posts]) => (
+    <section class="food-section">
+      <h2>{categoryEmojis[category] || '🍽️'} {category}</h2>
+      <div class="grid">
+        {(posts as any[]).map(post => (
+          <a href={post.url} class="card">
+            <h3>{post.frontmatter.title?.replace(`Can a ${breedName} eat `, '').replace('?', '')}</h3>
+            <span class="card-arrow">→</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  ))}
 
   <footer class="site-footer">
     <p>© 2025 Can My Pet Eat This? — AI-powered pet nutrition research.</p>
@@ -57,171 +80,116 @@ const breedPosts = allPosts.filter(post => post.file.includes(`/${breed}/`));
 <script define:vars={{ breeds: schema.breeds, foods: schema.foods, currentBreedId: breed, currentBreedName: breedName }}>
 	const searchInput = document.getElementById('searchInput');
 	const searchBtn = document.getElementById('searchBtn');
-
 	function handleSearch() {
 		let query = searchInput.value.trim().toLowerCase();
 		if (!query) return;
-
-		let foundBreed = breeds.find(b => query.includes(b.name.toLowerCase()) || query.includes(b.id.replace(/-/g, ' ')));
-        if (!foundBreed) {
-            foundBreed = breeds.find(b => b.id === currentBreedId);
-            query = currentBreedName.toLowerCase() + " " + query;
-        }
-
+		let foundBreed = breeds.find(b => query.includes(b.name.toLowerCase()));
+		if (!foundBreed) {
+			foundBreed = breeds.find(b => b.id === currentBreedId);
+			query = currentBreedName.toLowerCase() + " " + query;
+		}
 		const foundFood = foods.find(f => query.includes(f.name.toLowerCase()) || query.includes(f.id.replace(/-/g, ' ')));
-
 		if (foundBreed && foundFood) {
 			window.location.href = `/${foundBreed.id}/can-eat-${foundFood.id}`;
 		} else {
 			window.location.href = `/request?q=${encodeURIComponent(query)}`;
 		}
 	}
-
 	searchBtn.addEventListener('click', handleSearch);
-	searchInput.addEventListener('keydown', (e) => {
-		if (e.key === 'Enter') handleSearch();
-	});
+	searchInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleSearch(); });
 </script>
 
 <style>
-	.hero {
-		text-align: center;
-		padding: 40px 0 50px;
+	/* Navbar */
+	.navbar {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 16px 0;
+		border-bottom: 1px solid var(--border-color);
+		margin-bottom: 20px;
 	}
-	.back-link {
-		display: inline-block;
-		font-weight: 600;
-		font-size: 0.9rem;
-		margin-bottom: 24px;
-		padding: 8px 20px;
-		background: var(--card-bg);
-		backdrop-filter: blur(8px);
-		border: 1px solid var(--border-color);
-		border-radius: 50px;
-		transition: transform 0.2s, box-shadow 0.2s;
+	.logo {
+		font-size: 1.3rem;
+		font-weight: 800;
+		color: var(--text-main);
+		display: flex;
+		align-items: center;
+		gap: 8px;
 	}
-	.back-link:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+	.logo span {
+		background: var(--gradient-hero);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
 	}
+	.logo:hover { color: var(--text-main); }
+	.breadcrumb { font-size: 0.9rem; color: var(--text-muted); }
+	.breadcrumb a { color: var(--primary); font-weight: 600; }
+	.breadcrumb .sep { margin: 0 8px; opacity: 0.4; }
+	.breadcrumb .current { font-weight: 600; color: var(--text-main); }
+
+	/* Hero */
+	.hero { text-align: center; padding: 40px 0 40px; }
 	.hero-emoji {
 		font-size: 4rem;
 		display: block;
-		margin-bottom: 16px;
-		animation: bounce 2s ease-in-out infinite;
+		margin-bottom: 12px;
+		animation: bounce 2.5s ease-in-out infinite;
 	}
-	@keyframes bounce {
-		0%, 100% { transform: translateY(0); }
-		50% { transform: translateY(-10px); }
-	}
+	@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 	.hero h1 {
 		font-size: clamp(2rem, 5vw, 3rem);
 		font-weight: 800;
-		margin-bottom: 12px;
-		letter-spacing: -0.03em;
+		margin-bottom: 10px;
 		background: var(--gradient-hero);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		background-clip: text;
 	}
-	.hero p {
-		font-size: 1.1rem;
-		color: var(--text-muted);
-		margin-bottom: 28px;
-	}
-	.result-count {
-		font-size: 0.9rem !important;
-		color: var(--primary) !important;
-		font-weight: 600;
-	}
+	.hero p { font-size: 1.05rem; color: var(--text-muted); margin-bottom: 28px; }
 
 	/* Search */
-	.search-box {
-		display: flex;
-		max-width: 560px;
-		margin: 0 auto 16px auto;
-		gap: 10px;
-	}
+	.search-box { display: flex; max-width: 520px; margin: 0 auto; gap: 10px; }
 	.search-box input {
-		flex: 1;
-		padding: 14px 22px;
-		font-size: 1rem;
-		border: 2px solid var(--border-color);
-		border-radius: 14px;
-		background: var(--card-bg);
-		backdrop-filter: blur(8px);
-		color: var(--text-main);
-		outline: none;
-		transition: border-color 0.25s, box-shadow 0.25s;
-		font-family: inherit;
+		flex: 1; padding: 14px 20px; font-size: 0.95rem;
+		border: 2px solid var(--border-color); border-radius: 14px;
+		background: var(--card-bg); backdrop-filter: blur(8px);
+		color: var(--text-main); outline: none;
+		transition: border-color 0.25s, box-shadow 0.25s; font-family: inherit;
 	}
-	.search-box input:focus {
-		border-color: var(--primary);
-		box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
-	}
+	.search-box input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(99,102,241,0.1); }
 	.search-box button {
-		display: flex;
-		align-items: center;
-		gap: 6px;
-		padding: 0 24px;
-		font-size: 0.95rem;
-		font-weight: 700;
-		border: none;
-		border-radius: 14px;
-		background: var(--gradient-hero);
-		color: white;
-		cursor: pointer;
-		transition: transform 0.15s, box-shadow 0.2s;
-		font-family: inherit;
-		white-space: nowrap;
+		display: flex; align-items: center; gap: 6px; padding: 0 22px;
+		font-size: 0.95rem; font-weight: 700; border: none; border-radius: 14px;
+		background: var(--gradient-hero); color: white; cursor: pointer;
+		transition: transform 0.15s, box-shadow 0.2s; font-family: inherit; white-space: nowrap;
 	}
-	.search-box button:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
-	}
+	.search-box button:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,0.3); }
 
-	/* Grid */
-	.articles { margin-bottom: 40px; }
+	/* Food sections */
+	.food-section { margin-bottom: 36px; }
+	.food-section h2 {
+		font-size: 1.3rem; font-weight: 700; margin-bottom: 14px;
+		padding-bottom: 8px; border-bottom: 2px solid var(--border-color);
+	}
 	.grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-		gap: 16px;
+		grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+		gap: 12px;
 	}
-	.card {
-		text-align: left;
-		position: relative;
-	}
-	.card h3 {
-		font-size: 1.05rem;
-		margin-bottom: 6px;
-		color: var(--text-main);
-		font-weight: 700;
-		padding-right: 24px;
-	}
-	.card p {
-		font-size: 0.88rem;
-		color: var(--text-muted);
-		margin: 0;
-		line-height: 1.5;
-	}
+	.card { padding: 18px 16px; position: relative; text-align: left; }
+	.card h3 { font-size: 0.95rem; color: var(--text-main); font-weight: 600; padding-right: 20px; }
 	.card-arrow {
-		position: absolute;
-		top: 28px;
-		right: 24px;
-		font-size: 1.2rem;
-		color: var(--primary);
-		opacity: 0;
-		transform: translateX(-8px);
-		transition: opacity 0.3s, transform 0.3s;
+		position: absolute; top: 18px; right: 16px;
+		color: var(--primary); opacity: 0; transform: translateX(-6px);
+		transition: opacity 0.25s, transform 0.25s; font-size: 1.1rem;
 	}
-	.card:hover .card-arrow {
-		opacity: 1;
-		transform: translateX(0);
-	}
+	.card:hover .card-arrow { opacity: 1; transform: translateX(0); }
 
 	@media (max-width: 640px) {
 		.search-box { flex-direction: column; }
-		.search-box button { padding: 14px; justify-content: center; }
-		.grid { grid-template-columns: 1fr; }
+		.search-box button { padding: 12px; justify-content: center; }
+		.grid { grid-template-columns: repeat(2, 1fr); }
+		.navbar { flex-direction: column; gap: 8px; }
 	}
 </style>

@@ -6,13 +6,45 @@ const schema = JSON.parse(fs.readFileSync('./data/schema.json', 'utf-8'));
 
 const dogs = schema.breeds.filter((b: any) => b.emoji === '🐶');
 const cats = schema.breeds.filter((b: any) => b.emoji === '🐱');
+
+// Featured breeds to show first (popular ones)
+const featuredDogIds = ['golden-retriever', 'french-bulldog', 'german-shepherd', 'labrador-retriever', 'siberian-husky', 'poodle', 'beagle', 'corgi', 'pembroke-welsh-corgi', 'shiba-inu', 'bulldog', 'rottweiler'];
+const featuredCatIds = ['persian', 'maine-coon', 'ragdoll', 'british-shorthair', 'siamese', 'bengal', 'sphynx', 'russian-blue'];
+
+const featuredDogs = dogs.filter((d: any) => featuredDogIds.includes(d.id));
+const otherDogs = dogs.filter((d: any) => !featuredDogIds.includes(d.id));
+const featuredCats = cats.filter((c: any) => featuredCatIds.includes(c.id));
+const otherCats = cats.filter((c: any) => !featuredCatIds.includes(c.id));
+
+// Food categories
+const foodCategories: Record<string, any[]> = {};
+schema.foods.forEach((f: any) => {
+  const cat = f.category || 'Other';
+  if (!foodCategories[cat]) foodCategories[cat] = [];
+  foodCategories[cat].push(f);
+});
+
+const categoryEmojis: Record<string, string> = {
+  Fruit: '🍎', Vegetable: '🥦', Meat: '🥩', Seafood: '🦐', Protein: '🥚',
+  Dairy: '🥛', Grains: '🌾', Snacks: '🍿', Nuts: '🥜', Seeds: '🌻',
+  Sweets: '🍬', Drinks: '☕', Spices: '🌿', Condiments: '🧂', 'Junk Food': '🍟'
+};
 ---
 
 <Layout title="Can My Pet Eat This? | Safe Pet Diet Guide" description="Discover safe and healthy food choices for your dogs and cats. Search our comprehensive database of pet-safe foods.">
+	<nav class="navbar">
+		<a href="/" class="logo">🐾 <span>PetDiet</span></a>
+		<div class="nav-links">
+			<a href="#dogs">Dogs</a>
+			<a href="#cats">Cats</a>
+			<a href="#foods">Foods</a>
+		</div>
+	</nav>
+
 	<header class="hero">
 		<span class="hero-badge">🐾 Trusted by Pet Lovers Worldwide</span>
 		<h1>Can My Pet Eat This?</h1>
-		<p>Search thousands of foods to see if they're safe for your furry friend. Powered by AI pet nutrition experts.</p>
+		<p>The internet's most comprehensive pet food safety database. Search any breed + food combo instantly.</p>
 		
 		<div class="search-box">
 			<input type="text" id="searchInput" placeholder="e.g. Can a Husky eat Strawberries?" />
@@ -31,35 +63,74 @@ const cats = schema.breeds.filter((b: any) => b.emoji === '🐱');
 		</div>
 	</header>
 
-	{dogs.length > 0 && (
-		<section class="breed-section">
-			<h2>🐶 Dog Breeds</h2>
-			<div class="grid">
-				{dogs.map((breed: any) => (
-					<a href={`/${breed.id}`} class="card">
-						<span class="card-emoji">{breed.emoji}</span>
-						<h3>{breed.name}</h3>
-						<p>{schema.foods.length} food guides</p>
-					</a>
-				))}
-			</div>
-		</section>
-	)}
+	<!-- Popular Dogs -->
+	<section class="breed-section" id="dogs">
+		<div class="section-header">
+			<h2>🐶 Popular Dog Breeds</h2>
+			<button class="toggle-btn" id="toggleDogs" data-expanded="false">Show all {dogs.length} breeds ↓</button>
+		</div>
+		<div class="grid">
+			{featuredDogs.map((breed: any) => (
+				<a href={`/${breed.id}`} class="card">
+					<div class="card-icon">🐕</div>
+					<h3>{breed.name}</h3>
+					<p>{schema.foods.length} food guides</p>
+				</a>
+			))}
+		</div>
+		<div class="grid hidden-grid" id="moreDogs">
+			{otherDogs.map((breed: any) => (
+				<a href={`/${breed.id}`} class="card">
+					<div class="card-icon">🐕</div>
+					<h3>{breed.name}</h3>
+					<p>{schema.foods.length} food guides</p>
+				</a>
+			))}
+		</div>
+	</section>
 
-	{cats.length > 0 && (
-		<section class="breed-section">
-			<h2>🐱 Cat Breeds</h2>
-			<div class="grid">
-				{cats.map((breed: any) => (
-					<a href={`/${breed.id}`} class="card">
-						<span class="card-emoji">{breed.emoji}</span>
-						<h3>{breed.name}</h3>
-						<p>{schema.foods.length} food guides</p>
-					</a>
-				))}
-			</div>
-		</section>
-	)}
+	<!-- Popular Cats -->
+	<section class="breed-section" id="cats">
+		<div class="section-header">
+			<h2>🐱 Popular Cat Breeds</h2>
+			<button class="toggle-btn" id="toggleCats" data-expanded="false">Show all {cats.length} breeds ↓</button>
+		</div>
+		<div class="grid">
+			{featuredCats.map((breed: any) => (
+				<a href={`/${breed.id}`} class="card">
+					<div class="card-icon">🐈</div>
+					<h3>{breed.name}</h3>
+					<p>{schema.foods.length} food guides</p>
+				</a>
+			))}
+		</div>
+		<div class="grid hidden-grid" id="moreCats">
+			{otherCats.map((breed: any) => (
+				<a href={`/${breed.id}`} class="card">
+					<div class="card-icon">🐈</div>
+					<h3>{breed.name}</h3>
+					<p>{schema.foods.length} food guides</p>
+				</a>
+			))}
+		</div>
+	</section>
+
+	<!-- Browse by Food -->
+	<section class="breed-section" id="foods">
+		<h2>🍽️ Browse by Food Category</h2>
+		<div class="food-categories">
+			{Object.entries(foodCategories).map(([category, foods]) => (
+				<div class="food-cat-card">
+					<h3>{categoryEmojis[category] || '🍽️'} {category}</h3>
+					<div class="food-tags">
+						{(foods as any[]).map((food: any) => (
+							<span class="food-tag">{food.name}</span>
+						))}
+					</div>
+				</div>
+			))}
+		</div>
+	</section>
 
 	<footer class="site-footer">
 		<p>© 2025 Can My Pet Eat This? — AI-powered pet nutrition research.</p>
@@ -73,28 +144,73 @@ const cats = schema.breeds.filter((b: any) => b.emoji === '🐱');
 	function handleSearch() {
 		const query = searchInput.value.trim().toLowerCase();
 		if (!query) return;
-
 		const foundBreed = breeds.find(b => query.includes(b.name.toLowerCase()) || query.includes(b.id.replace(/-/g, ' ')));
 		const foundFood = foods.find(f => query.includes(f.name.toLowerCase()) || query.includes(f.id.replace(/-/g, ' ')));
-
 		if (foundBreed && foundFood) {
 			window.location.href = `/${foundBreed.id}/can-eat-${foundFood.id}`;
 		} else {
 			window.location.href = `/request?q=${encodeURIComponent(query)}`;
 		}
 	}
-
 	searchBtn.addEventListener('click', handleSearch);
-	searchInput.addEventListener('keydown', (e) => {
-		if (e.key === 'Enter') handleSearch();
-	});
+	searchInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleSearch(); });
+
+	// Toggle show more/less
+	function setupToggle(btnId, gridId) {
+		const btn = document.getElementById(btnId);
+		const grid = document.getElementById(gridId);
+		if (!btn || !grid) return;
+		btn.addEventListener('click', () => {
+			const expanded = btn.dataset.expanded === 'true';
+			grid.style.display = expanded ? 'none' : 'grid';
+			btn.dataset.expanded = expanded ? 'false' : 'true';
+			btn.textContent = expanded ? btn.textContent.replace('Show less ↑', 'Show all') + ' ↓' : 'Show less ↑';
+		});
+	}
+	setupToggle('toggleDogs', 'moreDogs');
+	setupToggle('toggleCats', 'moreCats');
 </script>
 
 <style>
+	/* Navbar */
+	.navbar {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 16px 0;
+		border-bottom: 1px solid var(--border-color);
+		margin-bottom: 20px;
+	}
+	.logo {
+		font-size: 1.3rem;
+		font-weight: 800;
+		color: var(--text-main);
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
+	.logo span {
+		background: var(--gradient-hero);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+	.logo:hover { color: var(--text-main); }
+	.nav-links {
+		display: flex;
+		gap: 24px;
+	}
+	.nav-links a {
+		font-size: 0.95rem;
+		font-weight: 600;
+		color: var(--text-muted);
+		transition: color 0.2s;
+	}
+	.nav-links a:hover { color: var(--primary); }
+
 	/* Hero */
 	.hero {
 		text-align: center;
-		padding: 100px 0 60px;
+		padding: 60px 0 50px;
 	}
 	.hero-badge {
 		display: inline-block;
@@ -106,7 +222,6 @@ const cats = schema.breeds.filter((b: any) => b.emoji === '🐱');
 		font-weight: 600;
 		color: var(--accent);
 		margin-bottom: 24px;
-		letter-spacing: 0.02em;
 	}
 	.hero h1 {
 		font-size: clamp(2.5rem, 7vw, 4rem);
@@ -119,10 +234,10 @@ const cats = schema.breeds.filter((b: any) => b.emoji === '🐱');
 		background-clip: text;
 	}
 	.hero p {
-		font-size: 1.15rem;
+		font-size: 1.1rem;
 		color: var(--text-muted);
 		margin-bottom: 36px;
-		max-width: 540px;
+		max-width: 520px;
 		margin-left: auto;
 		margin-right: auto;
 	}
@@ -131,7 +246,7 @@ const cats = schema.breeds.filter((b: any) => b.emoji === '🐱');
 	.search-box {
 		display: flex;
 		max-width: 580px;
-		margin: 0 auto 32px auto;
+		margin: 0 auto 28px auto;
 		gap: 10px;
 	}
 	.search-box input {
@@ -171,84 +286,108 @@ const cats = schema.breeds.filter((b: any) => b.emoji === '🐱');
 		transform: translateY(-2px);
 		box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
 	}
-	.search-box button:active {
-		transform: translateY(0);
-	}
 
-	/* Stats bar */
+	/* Stats */
 	.stats-bar {
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		gap: 24px;
-		margin-bottom: 20px;
 	}
-	.stat {
-		font-size: 0.95rem;
-		color: var(--text-muted);
-	}
-	.stat strong {
-		color: var(--primary);
-		font-weight: 800;
-		font-size: 1.1rem;
-	}
-	.stat-divider {
-		width: 4px;
-		height: 4px;
-		border-radius: 50%;
-		background: var(--border-color);
-	}
+	.stat { font-size: 0.95rem; color: var(--text-muted); }
+	.stat strong { color: var(--primary); font-weight: 800; font-size: 1.1rem; }
+	.stat-divider { width: 4px; height: 4px; border-radius: 50%; background: var(--border-color); }
 
-	/* Breed sections */
-	.breed-section {
-		margin-bottom: 60px;
+	/* Sections */
+	.breed-section { margin-bottom: 48px; }
+	.section-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 20px;
+		flex-wrap: wrap;
+		gap: 12px;
 	}
+	.section-header h2 { font-size: 1.5rem; font-weight: 700; margin: 0; }
+	.toggle-btn {
+		background: var(--card-bg);
+		border: 1px solid var(--border-color);
+		border-radius: 50px;
+		padding: 8px 20px;
+		font-size: 0.85rem;
+		font-weight: 600;
+		color: var(--primary);
+		cursor: pointer;
+		transition: background 0.2s, transform 0.15s;
+		font-family: inherit;
+	}
+	.toggle-btn:hover { transform: translateY(-1px); background: rgba(99, 102, 241, 0.06); }
+
 	.breed-section h2 {
-		font-size: 1.6rem;
-		margin-bottom: 24px;
+		font-size: 1.5rem;
+		margin-bottom: 20px;
 		font-weight: 700;
 	}
 
 	/* Grid */
 	.grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+		gap: 14px;
+	}
+	.hidden-grid { display: none; margin-top: 14px; }
+
+	/* Cards */
+	.card { text-align: center; padding: 24px 12px; }
+	.card-icon {
+		font-size: 2rem;
+		margin-bottom: 10px;
+		display: block;
+		transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+	}
+	.card:hover .card-icon { transform: scale(1.25) rotate(-8deg); }
+	.card h3 { font-size: 0.95rem; margin-bottom: 4px; color: var(--text-main); font-weight: 700; }
+	.card p { font-size: 0.78rem; color: var(--text-muted); margin: 0; }
+
+	/* Food Categories */
+	.food-categories {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
 		gap: 16px;
 	}
-
-	/* Card overrides for index */
-	.card {
-		text-align: center;
-		padding: 28px 16px;
+	.food-cat-card {
+		background: var(--card-bg);
+		backdrop-filter: blur(16px);
+		border: 1px solid var(--border-color);
+		border-radius: var(--radius);
+		padding: 20px;
+		box-shadow: var(--glass-shadow);
 	}
-	.card-emoji {
-		font-size: 2.5rem;
-		display: block;
-		margin-bottom: 12px;
-		filter: grayscale(0.2);
-		transition: filter 0.3s, transform 0.3s;
-	}
-	.card:hover .card-emoji {
-		filter: grayscale(0);
-		transform: scale(1.2) rotate(-5deg);
-	}
-	.card h3 {
-		font-size: 1.05rem;
-		margin-bottom: 6px;
-		color: var(--text-main);
+	.food-cat-card h3 {
+		font-size: 1rem;
 		font-weight: 700;
+		margin-bottom: 12px;
+		color: var(--text-main);
 	}
-	.card p {
-		font-size: 0.85rem;
+	.food-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+	.food-tag {
+		display: inline-block;
+		padding: 4px 12px;
+		background: rgba(99, 102, 241, 0.06);
+		border: 1px solid rgba(99, 102, 241, 0.1);
+		border-radius: 50px;
+		font-size: 0.78rem;
 		color: var(--text-muted);
-		margin: 0;
+		font-weight: 500;
 	}
 
 	@media (max-width: 640px) {
-		.hero { padding: 60px 0 40px; }
+		.hero { padding: 40px 0 30px; }
 		.search-box { flex-direction: column; }
 		.search-box button { padding: 14px; justify-content: center; }
-		.grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+		.grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
 		.stats-bar { gap: 16px; flex-wrap: wrap; }
+		.navbar { flex-direction: column; gap: 12px; }
+		.food-categories { grid-template-columns: 1fr; }
 	}
 </style>
